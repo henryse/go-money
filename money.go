@@ -50,6 +50,11 @@ func (m *Money) Amount() int64 {
 	return m.amount.val
 }
 
+// Amount returns a copy of the internal monetary value as an float64
+func (m *Money) AmountFloat64() float64 {
+	return float64(m.amount.val) / math.Pow10(m.currency.Fraction)
+}
+
 // SameCurrency check if given Money is equals by currency
 func (m *Money) SameCurrency(om *Money) bool {
 	return m.currency.equals(om.currency)
@@ -57,7 +62,7 @@ func (m *Money) SameCurrency(om *Money) bool {
 
 func (m *Money) assertSameCurrency(om *Money) error {
 	if !m.SameCurrency(om) {
-		return errors.New("Currencies don't match")
+		return errors.New("currencies don't match")
 	}
 
 	return nil
