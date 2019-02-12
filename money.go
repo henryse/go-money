@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-// Amount is a datastructure that stores the amount being used for calculations
+// Amount is a data structure that stores the amount being used for calculations
 type Amount struct {
 	val int64
 }
