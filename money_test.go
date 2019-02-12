@@ -23,6 +23,42 @@ func TestNew(t *testing.T) {
 	}
 }
 
+func TestNewFloat64(t *testing.T) {
+	m := NewFloat64(0.01, "EUR")
+
+	if m.amount.val != 1 {
+		t.Errorf("Expected %d got %d", 1, m.amount.val)
+	}
+
+	if m.currency.Code != "EUR" {
+		t.Errorf("Expected currency %s got %s", "EUR", m.currency.Code)
+	}
+
+	m = New(-100, "EUR")
+
+	if m.amount.val != -100 {
+		t.Errorf("Expected %d got %d", -100, m.amount.val)
+	}
+}
+
+func TestNewString(t *testing.T) {
+	m := NewString("0.01", "EUR")
+
+	if m.amount.val != 1 {
+		t.Errorf("Expected %d got %d", 1, m.amount.val)
+	}
+
+	if m.currency.Code != "EUR" {
+		t.Errorf("Expected currency %s got %s", "EUR", m.currency.Code)
+	}
+
+	m = New(-100, "EUR")
+
+	if m.amount.val != -100 {
+		t.Errorf("Expected %d got %d", -100, m.amount.val)
+	}
+}
+
 func TestCurrency(t *testing.T) {
 	code := "MOCK"
 	decimals := 5

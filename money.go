@@ -2,6 +2,8 @@ package money
 
 import (
 	"errors"
+	"math"
+	"strconv"
 )
 
 // Amount is a datastructure that stores the amount being used for calculations
@@ -22,6 +24,20 @@ func New(amount int64, code string) *Money {
 		amount:   &Amount{val: amount},
 		currency: newCurrency(code).get(),
 	}
+}
+
+// Currency returns the currency used by Money
+func NewFloat64(amount float64, code string) *Money {
+	value := int64(amount * math.Pow10(currencies[code].Fraction))
+
+	return New(value, code)
+}
+
+// Currency returns the currency used by Money
+func NewString(amount string, code string) *Money {
+	value, _ := strconv.ParseFloat(amount, 64)
+
+	return NewFloat64(value, code)
 }
 
 // Currency returns the currency used by Money
