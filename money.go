@@ -254,3 +254,9 @@ func (m *Money) Display() string {
 	c := m.currency.get()
 	return c.Formatter().Format(m.amount.val)
 }
+
+// Display lets represent Money struct as string Accounting Format.
+func (m *Money) DisplayAccounting() string {
+	c := m.currency.get()
+	return c.Formatter().FormatAccounting(m.amount.val)
+}
