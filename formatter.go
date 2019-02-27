@@ -1,6 +1,7 @@
 package money
 
 import (
+	"html/template"
 	"strconv"
 	"strings"
 )
@@ -86,4 +87,61 @@ func (f *Formatter) FormatAccounting(amount int64) string {
 	}
 
 	return sa
+}
+
+func (f *Formatter) FormatDIV(amount int64, positive string, negative string) template.HTML {
+	// Work with absolute amount value
+	sa := strconv.FormatInt(f.abs(amount), 10)
+
+	if len(sa) <= f.Fraction {
+		sa = strings.Repeat("0", f.Fraction-len(sa)+1) + sa
+	}
+
+	if f.Thousand != "" {
+		for i := len(sa) - f.Fraction - 3; i > 0; i -= 3 {
+			sa = sa[:i] + f.Thousand + sa[i:]
+		}
+	}
+
+	if f.Fraction > 0 {
+		sa = sa[:len(sa)-f.Fraction] + f.Decimal + sa[len(sa)-f.Fraction:]
+	}
+
+	sa = strings.Replace(f.Template, "1", sa, 1)
+	sa = strings.Replace(sa, "$", f.Grapheme, 1)
+
+	if amount < 0 {
+		sa = "<div class='" + negative + "'>" + sa + "</div>"
+	} else {
+		sa = "<div class='" + positive + "'>" + sa + "</div>"
+	}
+
+	return template.HTML(sa)
+}
+
+func (f *Formatter) FormatAccountingDIV(amount int64, positive string, negative string) template.HTML {
+	// Work with absolute amount value
+	sa := strconv.FormatInt(f.abs(amount), 10)
+
+	if len(sa) <= f.Fraction {
+		sa = strings.Repeat("0", f.Fraction-len(sa)+1) + sa
+	}
+
+	if f.Thousand != "" {
+		for i := len(sa) - f.Fraction - 3; i > 0; i -= 3 {
+			sa = sa[:i] + f.Thousand + sa[i:]
+		}
+	}
+
+	if f.Fraction > 0 {
+		sa = sa[:len(sa)-f.Fraction] + f.Decimal + sa[len(sa)-f.Fraction:]
+	}
+
+	if amount < 0 {
+		sa = "<div class='" + negative + "'>( " + sa + " )</div>"
+	} else {
+		sa = "<div class='" + positive + "'>" + sa + "</div>"
+	}
+
+	return template.HTML(sa)
 }

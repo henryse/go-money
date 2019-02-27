@@ -2,6 +2,7 @@ package money
 
 import (
 	"errors"
+	"html/template"
 	"math"
 	"strconv"
 )
@@ -259,4 +260,16 @@ func (m *Money) Display() string {
 func (m *Money) DisplayAccounting() string {
 	c := m.currency.get()
 	return c.Formatter().FormatAccounting(m.amount.val)
+}
+
+// Display lets represent Money struct as string Accounting Format.
+func (m *Money) DisplayDIV(positive string, negative string) template.HTML {
+	c := m.currency.get()
+	return c.Formatter().FormatDIV(m.amount.val, positive, negative)
+}
+
+// Display lets represent Money struct as string Accounting Format.
+func (m *Money) DisplayAccountingDIV(positive string, negative string) template.HTML {
+	c := m.currency.get()
+	return c.Formatter().FormatAccountingDIV(m.amount.val, positive, negative)
 }
