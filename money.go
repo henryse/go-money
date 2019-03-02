@@ -29,7 +29,8 @@ func New(amount int64, code string) *Money {
 
 // Currency returns the currency used by Money
 func NewFloat64(amount float64, code string) *Money {
-	value := int64(amount * math.Pow10(currencies[code].Fraction))
+	amount = math.Round(amount * math.Pow10(currencies[code].Fraction))
+	value := int64(amount)
 
 	return New(value, code)
 }
