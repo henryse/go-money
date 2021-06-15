@@ -263,14 +263,23 @@ func (m *Money) DisplayAccounting() string {
 	return c.Formatter().FormatAccounting(m.amount.val)
 }
 
-// Display lets represent Money struct as string Accounting Format.
+// Display Money struct as string Accounting Format.
 func (m *Money) DisplayDIV(positive string, negative string) template.HTML {
 	c := m.currency.get()
 	return c.Formatter().FormatDIV(m.amount.val, positive, negative)
 }
 
-// Display lets represent Money struct as string Accounting Format.
+// Display Money struct as string Accounting Format.
 func (m *Money) DisplayAccountingDIV(positive string, negative string) template.HTML {
 	c := m.currency.get()
+	return c.Formatter().FormatAccountingDIV(m.amount.val, positive, negative)
+}
+
+// Display Money struct as string Accounting Format, but if it is Zero return nothing.
+func (m *Money) DisplayAccountingNoZeroDIV(positive string, negative string) template.HTML {
+	c := m.currency.get()
+	if m.IsZero() {
+		return ""
+	}
 	return c.Formatter().FormatAccountingDIV(m.amount.val, positive, negative)
 }
