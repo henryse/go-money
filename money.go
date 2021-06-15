@@ -27,6 +27,17 @@ func New(amount int64, code string) *Money {
 	}
 }
 
+// New creates and returns new instance of Money
+func NewMoney(money *Money) *Money {
+	amount := *money.amount
+	currency := *money.currency
+
+	return &Money{
+		amount:   &amount,
+		currency: &currency,
+	}
+}
+
 // Currency returns the currency used by Money
 func NewFloat64(amount float64, code string) *Money {
 	amount = math.Round(amount * math.Pow10(currencies[code].Fraction))
@@ -243,9 +254,11 @@ func (m *Money) Allocate(rs ...int) ([]*Money, error) {
 		sub = -sub
 	}
 
-	for p := 0; lo != 0; p++ {
-		ms[p].amount = mutate.calc.add(ms[p].amount, &Amount{sub})
-		lo -= sub
+	if ms != nil {
+		for p := 0; lo != 0; p++ {
+			ms[p].amount = mutate.calc.add(ms[p].amount, &Amount{sub})
+			lo -= sub
+		}
 	}
 
 	return ms, nil
